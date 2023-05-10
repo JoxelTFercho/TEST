@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets>
+  <RadPlusWidgetSQLMulti widgetID="CONSUMER_EPISODES">
+    <application>BHIS</application>
+    <contentType>text/html</contentType>
+    <entityType>PATIENT</entityType>
+    <manualRefresh>true</manualRefresh>
+    <minimizable>true</minimizable>
+    <ntstRestrictExport>false</ntstRestrictExport>
+    <undockable>true</undockable>
+    <skipInitialLoad>false</skipInitialLoad>
+    <suppressHeader>false</suppressHeader>
+    <suppressLineBreaks>false</suppressLineBreaks>
+    <timeLimit>3</timeLimit>
+    <textTemplate>N</textTemplate>
+    <title>Consumer Episodes</title>
+    <userdefined>true</userdefined>
+    <widgetType>NX</widgetType>
+    <sqlcode1><![CDATA[Select
+Episode,
+Program,
+"Admit Practitioner",
+"Auxiliary Staff",
+"Admit Date",
+"Program Enrollment Date",
+"Discharge Date"
+from
+(
+SELECT
+vesa.EPISODE_NUMBER AS "Episode"
+,
+vesa.program_value As "Program"
+,
+vesa.admit_practitioner_name As "Admit Practitioner"
+,
+list(Case
+when CHARINDEX(',',
+aux.case_staff_add_Value)>0 then String(' ',
+SUBSTRING(aux.case_staff_add_Value, CHARINDEX(',', aux.case_staff_add_Value) + 1, LEN(aux.case_staff_add_Value) - CHARINDEX(',', aux.case_staff_add_Value) + 1) ,
+' ' ,
+SUBSTRING(aux.case_staff_add_Value, 1, CHARINDEX(',', aux.case_staff_add_Value) - 1))
+else String(' ',
+aux.case_staff_add_Value)
+end) As "Auxiliary Staff"
+,
+CONVERT(varchar,
+vesa.preadmit_admission_date,
+110) As "Admit Date"
+,
+CASE
+WHEN vesa.date_of_discharge IS NULL
+THEN '<font color="Green">Open Episode</font>'
+ELSE CONVERT(varchar,
+vesa.date_of_discharge,
+110)
+END As "Discharge Date"
+,
+vesa.date_of_discharge,
+CONVERT(varchar,
+ped.program_enrollment_date,
+110) As "Program Enrollment Date"
+FROM
+view_episode_summary_admit vesa
+LEFT OUTER JOIN CWSSYSTEM.additional_caseload_mi aux ON
+((vesa.FACILITY = aux.FACILITY)
+AND (vesa.EPISODE_NUMBER = aux.EPISODE_NUMBER))
+AND (vesa.PATID = aux.PATID)
+LEFT JOIN 
+(
+SELECT
+FACILITY,
+PATID,
+EPISODE_NUMBER,
+MAX(program_enrollment_date) as program_enrollment_date
+FROM
+SYSTEM.program_enrollment
+GROUP BY
+FACILITY,
+PATID,
+EPISODE_NUMBER
+) ped
+ON
+vesa.FACILITY = ped.FACILITY
+AND vesa.PATID = ped.PATID
+AND vesa.EPISODE_NUMBER = ped.EPISODE_NUMBER
+WHERE
+vesa.PATID = ?PATID
+AND vesa.FACILITY = ?FACILITY
+Group by
+vesa.EPISODE_NUMBER)
+order by
+date_of_discharge ASC,
+Episode asc]]></sqlcode1>
+    <enhancedview>true</enhancedview>
+  </RadPlusWidgetSQLMulti>
+  <rootCode>BLD</rootCode>
+</widgets>
