@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widgets>
   breaking change
+  
+  
+  
+  
+  more breaking changes out of the box again
+  
+  
+  
   <RadPlusWidgetSQLMulti widgetID="CONSUMER_EPISODES">
     <application>BHIS</application>
     <contentType>text/html</contentType>
