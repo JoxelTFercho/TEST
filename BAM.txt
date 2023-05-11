@@ -7,3 +7,5 @@ Tim is best and won
 Tim is going to overwrite the file with no merge
 
 This is not working yet
+
+This will not work until a hard reset on git
