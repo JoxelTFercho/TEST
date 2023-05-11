@@ -1,4 +1,4 @@
 trying again
 maybe this time
 MAYBE
-SERVER STILL DONT WORK
+CHNAGED OUTSIDE OF GIT
