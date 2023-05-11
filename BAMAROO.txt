@@ -1,2 +1,2 @@
 This is a new BAM file created after .gitattributes was added to make txt -diff
-FORGET EVERYONE ELSE = I WIN
+still did not work after creating a new file after the .gitattributes file was created.
