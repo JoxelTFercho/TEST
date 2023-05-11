@@ -1,5 +1,6 @@
 *.xml binary
 
 *.xml -diff
-*.txt -diff
+*.txt -binary
+
 
