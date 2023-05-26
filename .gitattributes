@@ -1,6 +1,3 @@
-*.xml binary
-
-*.xml -diff
-*.txt -binary
-
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:626afc30a0b601125d11de3b2af7ab3b21d588ec18249bcece43e4028fac9403
+size 110
